@@ -34,6 +34,7 @@ Saving costs students nothing. Chillar earns on what happens to the money afterw
 | [Campaign brief (PDF)](Chillar_Campaign_Brief.pdf) | One-page creative brief |
 | [The Reel (MP4)](Chillar_Reel_RIP_Goa_Plans.mp4) | The final 55-second hero Reel |
 | [Landing page](index.html) | The campaign landing page, also hosted live (see the link in the About panel) |
+| [App prototype](app/index.html) | Clickable six-screen prototype of the Chillar app, live at https://pransh18.github.io/chillar-campaign/app/ |
 
 ---
 

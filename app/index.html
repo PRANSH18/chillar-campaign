@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chillar prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+:root{--cream:#FFF6E6;--paper:#FFFBF3;--plum:#2B1640;--dusk:#6A2C6E;--sun:#FF7A45;--gold:#FFB320;--gold-deep:#B35F00;--ink:#17151F;--ink-2:#4A4553;--line:#EADCC2;--mint:#1F9E86;--rose:#C2496A;--display:'Bricolage Grotesque',system-ui,sans-serif;--body:'DM Sans',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);color:var(--ink);background:linear-gradient(160deg,var(--cream) 0%,#FFE9D6 100%);min-height:100vh}
+a{color:inherit}
+.page{max-width:1120px;margin:0 auto;padding:36px 24px 48px;display:grid;grid-template-columns:1fr 390px;gap:48px;align-items:start}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:24px;color:var(--plum);text-decoration:none}
+.side h1{font-family:var(--display);font-size:40px;line-height:1.05;color:var(--plum);margin:22px 0 12px}
+.side h1 em{font-style:normal;color:var(--sun)}
+.side p.lede{color:var(--ink-2);font-size:16px;line-height:1.55;max-width:520px}
+.steps{list-style:none;margin:26px 0;display:grid;gap:8px}
+.steps button{all:unset;cursor:pointer;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;padding:12px 14px;border-radius:14px;border:1px solid transparent;width:100%;box-sizing:border-box}
+.steps button:hover{background:rgba(255,255,255,.6)}
+.steps button[aria-current="true"]{background:#fff;border-color:var(--line);box-shadow:0 6px 18px rgba(43,22,64,.08)}
+.steps .n{width:34px;height:34px;border-radius:50%;background:var(--plum);color:var(--gold);display:grid;place-items:center;font-weight:700;font-size:14px}
+.steps b{display:block;font-size:15px;color:var(--plum)}
+.steps span{font-size:13.5px;color:var(--ink-2);line-height:1.45}
+.links{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;font-weight:500}
+.links a{color:var(--dusk)}
+.note{margin-top:18px;font-size:12.5px;color:var(--ink-2)}
+/* phone */
+.phone{width:390px;height:800px;border-radius:46px;background:var(--ink);padding:12px;box-shadow:0 30px 60px rgba(43,22,64,.28);position:sticky;top:24px}
+.screen{width:100%;height:100%;border-radius:36px;background:var(--paper);overflow:hidden;position:relative;display:flex;flex-direction:column}
+.status{height:40px;display:flex;justify-content:space-between;align-items:center;padding:0 26px;font-size:13px;font-weight:700;flex:none}
+.view{display:none;flex:1;flex-direction:column;overflow-y:auto;padding:4px 20px 20px}
+.view.on{display:flex}
+.top{display:flex;justify-content:space-between;align-items:center;margin:4px 0 16px}
+.top h2{font-family:var(--display);font-size:22px;color:var(--plum)}
+.back{all:unset;cursor:pointer;font-size:14px;color:var(--dusk);font-weight:500}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:12px}
+.card h3{font-size:15px;color:var(--plum);margin-bottom:6px}
+.muted{color:var(--ink-2);font-size:13px;line-height:1.45}
+.btn{all:unset;cursor:pointer;display:block;width:100%;box-sizing:border-box;text-align:center;padding:15px;border-radius:16px;font-weight:700;font-size:15px;background:var(--plum);color:#fff;margin-top:10px}
+.btn.sun{background:var(--sun)}
+.btn.ghost{background:transparent;color:var(--plum);border:1.5px solid var(--plum)}
+.chip{display:inline-block;font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:999px;background:#EFE6F5;color:var(--dusk);margin:2px 4px 2px 0}
+.chip.ok{background:#E0F3EE;color:var(--teal,#0C5A4C)}
+.chip.sun{background:#FFE7DB;color:#A8431A}
+/* welcome */
+.hero{background:linear-gradient(170deg,var(--plum) 0%,var(--dusk) 55%,var(--sun) 100%);color:#fff;margin:-4px -20px 0;padding:36px 24px 30px;border-radius:0 0 30px 30px}
+.hero h1{font-family:var(--display);font-size:34px;line-height:1.05;margin:20px 0 10px}
+.hero p{font-size:15px;opacity:.92;line-height:1.5}
+.coins{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.coins span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);padding:6px 10px;border-radius:12px;font-size:12.5px}
+.field{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:14px;padding:13px 14px;background:#fff;font-size:15px;margin-top:18px}
+.field b{color:var(--ink-2)}
+/* consent */
+.row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+.row:last-child{border-bottom:none}
+.row span:first-child{color:var(--ink-2)}
+.row span:last-child{font-weight:700;text-align:right}
+.tick{display:none;color:var(--mint);font-weight:700;font-size:13px;margin-top:8px}
+.done .tick{display:block}
+.done .btn{display:none}
+/* home */
+.balance{background:var(--plum);color:#fff;border-radius:22px;padding:18px;margin-bottom:12px}
+.balance small{opacity:.75;font-size:12.5px}
+.balance .big{font-family:var(--display);font-size:34px;font-weight:800;margin:4px 0 10px}
+.meter{height:10px;border-radius:99px;background:rgba(255,255,255,.18);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--gold);border-radius:99px}
+.balance .muted{color:rgba(255,255,255,.8);margin-top:8px}
+.tx{display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #F3EADB}
+.tx:last-child{border-bottom:none}
+.ico{width:36px;height:36px;border-radius:12px;background:var(--cream);display:grid;place-items:center;font-size:17px}
+.tx b{font-size:14px}
+.tx small{display:block;color:var(--ink-2);font-size:12px}
+.plus{font-weight:800;color:var(--mint)}
+.jars{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.jar{all:unset;cursor:pointer;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 10px;font-size:12px}
+.jar b{display:block;font-size:15px;color:var(--plum);margin-top:4px}
+.jar .bar{height:6px;border-radius:9px;background:#F1E7D6;margin-top:8px;overflow:hidden}
+.jar .bar i{display:block;height:100%;background:var(--sun)}
+/* squad */
+.goal{background:linear-gradient(160deg,#FFE7DB,#FFF6E6);border:1px solid #F7CDB7;border-radius:22px;padding:18px;margin-bottom:12px}
+.goal .big{font-family:var(--display);font-size:30px;font-weight:800;color:var(--plum)}
+.goal .meter{background:#F6D9C8;margin:10px 0 6px}
+.goal .meter i{background:var(--sun)}
+.mem{display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;padding:8px 0}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:14px}
+.mem b{font-size:14px}
+.mem small{display:block;font-size:12px;color:var(--ink-2)}
+.paused{opacity:.6}
+.alert{background:#FFF3CF;border:1px solid #F3D27A;border-radius:16px;padding:12px 14px;font-size:13px;line-height:1.45;margin-bottom:12px}
+/* book */
+.offer{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid #F3EADB}
+.offer:last-child{border-bottom:none}
+.offer .ico{width:44px;height:44px;font-size:20px}
+.off{font-weight:800;color:var(--sun);font-size:14px}
+.choice{all:unset;cursor:pointer;display:block;border:1.5px solid var(--line);border-radius:18px;padding:14px;margin-bottom:10px;background:#fff}
+.choice.sel{border-color:var(--plum);box-shadow:0 0 0 3px #EFE6F5}
+.choice b{color:var(--plum)}
+/* wealth */
+.bars{display:flex;align-items:flex-end;gap:10px;height:120px;margin:12px 0 4px}
+.bars div{flex:1;background:var(--gold);border-radius:8px 8px 4px 4px;position:relative}
+.bars div span{position:absolute;bottom:-20px;left:0;right:0;text-align:center;font-size:11px;color:var(--ink-2)}
+.split{display:flex;height:14px;border-radius:99px;overflow:hidden;margin:10px 0}
+.split i:first-child{background:var(--sun);width:60%}
+.split i:last-child{background:var(--gold);width:40%}
+.tabs{flex:none;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:#fff;padding:8px 0 14px}
+.tabs button{all:unset;cursor:pointer;text-align:center;font-size:11.5px;color:var(--ink-2);font-weight:500}
+.tabs button i{display:block;font-style:normal;font-size:18px;margin-bottom:2px}
+.tabs button.on{color:var(--plum);font-weight:700}
+.toast{position:absolute;left:16px;right:16px;bottom:84px;background:var(--ink);color:#fff;padding:12px 14px;border-radius:14px;font-size:13px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none}
+.toast.show{opacity:1;transform:none}
+@media (max-width:900px){.page{grid-template-columns:1fr;justify-items:center}.side{max-width:520px}.phone{position:static;width:min(390px,100%);height:780px}}
+</style>
+</head>
+<body>
+<div class="page">
+  <section class="side">
+    <a class="brand" href="../"><svg width="32" height="32" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="#FFB320"/><circle cx="32" cy="32" r="17" fill="none" stroke="#17151F" stroke-width="5.5"/><circle cx="32" cy="32" r="5.5" fill="#17151F"/></svg>chillar</a>
+    <h1>The first money app for young India's <em>shared goals.</em></h1>
+    <p class="lede">A clickable prototype of the Chillar app. Tap through the phone, or jump to any step below.</p>
+    <ol class="steps" id="steps"></ol>
+    <div class="links"><a href="../">Launch campaign site</a><a href="../Chillar_Reel_RIP_Goa_Plans.mp4">Watch the reel</a></div>
+    <p class="note">Prototype for a venture pitch. Names, amounts and partner offers are illustrative. Chillar is pre-product.</p>
+  </section>
+
+  <div class="phone" aria-label="Chillar app prototype">
+    <div class="screen">
+      <div class="status"><span>9:41</span><span>5G ▮▮▮</span></div>
+
+      <!-- 1 welcome -->
+      <div class="view on" data-v="0">
+        <div class="hero">
+          <svg width="44" height="44" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="#FFB320"/><circle cx="32" cy="32" r="17" fill="none" stroke="#17151F" stroke-width="5.5"/><circle cx="32" cy="32" r="5.5" fill="#17151F"/></svg>
+          <h1>Your spare change is your squad's next trip.</h1>
+          <p>Pay with any UPI app as usual. Chillar rounds up each payment and saves the change towards goals you share with friends.</p>
+          <div class="coins"><span>Chai ₹17 → ₹20</span><span>+₹3 saved</span><span>Goa in 90 days</span></div>
+        </div>
+        <div class="field"><b>+91</b> 98XXX XXX21</div>
+        <button class="btn sun" data-go="1">Get started</button>
+        <p class="muted" style="text-align:center;margin-top:12px">For ages 18 to 30. Savings stay in your own name.</p>
+        <div class="card" style="margin-top:16px">
+          <div class="mem"><div class="av" style="background:var(--sun)">◎</div><div><b>Squad Jar</b><small>Save with friends for a trip or concert</small></div></div>
+          <div class="mem"><div class="av" style="background:var(--plum)">★</div><div><b>Goal Jar</b><small>Your own short goals, like sneakers</small></div></div>
+          <div class="mem"><div class="av" style="background:var(--gold-deep)">◆</div><div><b>Wealth Jar</b><small>Long-term, in regulated funds</small></div></div>
+        </div>
+      </div>
+
+      <!-- 2 connect -->
+      <div class="view" data-v="1">
+        <div class="top"><button class="back" data-go="0">← Back</button><span class="chip">Step 2 of 2</span></div>
+        <h2 style="font-family:var(--display);color:var(--plum);font-size:24px;margin-bottom:6px">Connect safely</h2>
+        <p class="muted" style="margin-bottom:14px">Two one-time approvals. You can pause or revoke either at any time.</p>
+        <div class="card" id="aa">
+          <h3>1. Share UPI transactions</h3>
+          <p class="muted">Through a licensed Account Aggregator. No SMS reading.</p>
+          <div class="row"><span>Purpose</span><span>Calculate round-ups</span></div>
+          <div class="row"><span>Data</span><span>Debit transactions only</span></div>
+          <div class="row"><span>Valid for</span><span>12 months, revocable</span></div>
+          <button class="btn" data-act="aa">Approve consent</button>
+          <div class="tick">✓ Consent approved</div>
+        </div>
+        <div class="card" id="ap">
+          <h3>2. Set up UPI AutoPay</h3>
+          <p class="muted">Your round-ups are collected when they reach ₹100, with a notice the day before.</p>
+          <div class="row"><span>Collect when change reaches</span><span>₹100</span></div>
+          <div class="row"><span>Monthly cap you set</span><span>₹2,000</span></div>
+          <div class="row"><span>Round up to</span><span>Next ₹10 (₹50 from ₹100)</span></div>
+          <button class="btn" data-act="ap">Approve AutoPay</button>
+          <div class="tick">✓ AutoPay active</div>
+        </div>
+        <button class="btn sun" id="toHome" data-go="2" style="opacity:.4;pointer-events:none">Continue</button>
+      </div>
+
+      <!-- 3 home -->
+      <div class="view" data-v="2">
+        <div class="top"><h2>Hey Pransh</h2><span class="chip ok">AutoPay on</span></div>
+        <div class="balance">
+          <small>Saved so far</small>
+          <div class="big">₹6,860</div>
+          <div class="meter"><i style="width:50%"></i></div>
+          <p class="muted">₹50 of change today. Collected at ₹100, tomorrow.</p>
+        </div>
+        <div class="jars">
+          <button class="jar" data-go="3">Squad Jar<b>Goa 2027</b><div class="bar"><i style="width:70%"></i></div></button>
+          <button class="jar" data-go="2">Goal Jar<b>Sneakers</b><div class="bar"><i style="width:38%"></i></div></button>
+          <button class="jar" data-go="5">Wealth Jar<b>₹2,740</b><div class="bar"><i style="width:55%;background:var(--gold)"></i></div></button>
+        </div>
+        <div class="card">
+          <h3>Today's round-ups</h3>
+          <div class="tx"><div class="ico">☕</div><div><b>Cutting chai</b><small>₹17 → ₹20</small></div><span class="plus">+₹3</span></div>
+          <div class="tx"><div class="ico">📄</div><div><b>Xerox</b><small>₹12 → ₹20</small></div><span class="plus">+₹8</span></div>
+          <div class="tx"><div class="ico">🛵</div><div><b>Bike taxi</b><small>₹63 → ₹70</small></div><span class="plus">+₹7</span></div>
+          <div class="tx"><div class="ico">🥤</div><div><b>Juice</b><small>₹45 → ₹50</small></div><span class="plus">+₹5</span></div>
+          <div class="tx"><div class="ico">🥟</div><div><b>Samosa</b><small>₹18 → ₹20</small></div><span class="plus">+₹2</span></div>
+          <div class="tx"><div class="ico">🍜</div><div><b>Late-night momos</b><small>₹175 → ₹200</small></div><span class="plus">+₹25</span></div>
+        </div>
+        <button class="btn" data-go="3">Open Goa 2027 Squad Jar</button>
+      </div>
+
+      <!-- 4 squad -->
+      <div class="view" data-v="3">
+        <div class="top"><button class="back" data-go="2">← Home</button><span class="chip sun">Squad Jar</span></div>
+        <div class="goal">
+          <span class="muted">Goa 2027 · 4 friends · 90-day plan</span>
+          <div class="big">₹12,600 <span style="font-size:16px;color:var(--ink-2)">of ₹18,000</span></div>
+          <div class="meter"><i style="width:70%"></i></div>
+          <span class="muted">70% saved · day 63 of 90 · 12-day squad streak</span>
+        </div>
+        <div class="alert"><b>Kabir paused his saving.</b> His ₹2,100 stays in his own jar. The goal now completes 9 days later. <a href="#" data-act="nudge">Nudge Kabir</a></div>
+        <div class="card">
+          <h3>Who's saving</h3>
+          <div class="mem"><div class="av" style="background:var(--plum)">P</div><div><b>You</b><small>₹54 a day average</small></div><b>₹3,780</b></div>
+          <div class="mem"><div class="av" style="background:var(--sun)">A</div><div><b>Aarav</b><small>₹51 a day average</small></div><b>₹3,520</b></div>
+          <div class="mem"><div class="av" style="background:var(--mint)">M</div><div><b>Meera</b><small>₹47 a day average</small></div><b>₹3,200</b></div>
+          <div class="mem paused"><div class="av" style="background:var(--rose)">K</div><div><b>Kabir</b><small>Paused 4 days ago</small></div><b>₹2,100</b></div>
+        </div>
+        <p class="muted" style="margin-bottom:4px">Each friend saves in their own name. Money is never pooled.</p>
+        <button class="btn sun" data-go="4">Plan the booking</button>
+      </div>
+
+      <!-- 5 book -->
+      <div class="view" data-v="4">
+        <div class="top"><button class="back" data-go="3">← Squad</button><span class="chip sun">Goal partners</span></div>
+        <h2 style="font-family:var(--display);color:var(--plum);font-size:24px;margin-bottom:6px">Book Goa with squad prices</h2>
+        <p class="muted" style="margin-bottom:12px">Partner offers unlock when the squad books together.</p>
+        <div class="card">
+          <div class="offer"><div class="ico">🏖️</div><div><b>Beach villa, Anjuna</b><small class="muted" style="display:block">4 nights · 2 rooms</small></div><span class="off">10% off</span></div>
+          <div class="offer"><div class="ico">🚆</div><div><b>Train, Chennai to Madgaon</b><small class="muted" style="display:block">3AC · 4 seats</small></div><span class="off">₹200 off</span></div>
+          <div class="offer"><div class="ico">🛡️</div><div><b>Trip cover</b><small class="muted" style="display:block">₹49 per person</small></div><span class="off">Add</span></div>
+        </div>
+        <button class="choice sel" data-pick="wait"><b>Wait 36 days</b><p class="muted">Book when the jar hits ₹18,000. Round-ups keep running.</p></button>
+        <button class="choice" data-pick="top"><b>Book now, top up ₹5,400</b><p class="muted">Save-first credit from our NBFC partner, available once 70% is saved. All fees shown upfront in the Key Fact Statement.</p></button>
+        <button class="btn sun" data-act="book">Confirm plan</button>
+      </div>
+
+      <!-- 6 wealth -->
+      <div class="view" data-v="5">
+        <div class="top"><button class="back" data-go="2">← Home</button><span class="chip ok">Regulated products only</span></div>
+        <div class="card">
+          <h3>Where your money sits</h3>
+          <div class="split"><i></i><i></i></div>
+          <div class="row"><span>Short-term goals (60%)</span><span>Overnight mutual fund</span></div>
+          <div class="row"><span>Long-term Wealth Jar (40%)</span><span>Gold ETF fund of funds</span></div>
+          <div class="row"><span>Through</span><span>AMFI-registered partner</span></div>
+          <div class="row"><span>Units held</span><span>In your own folio</span></div>
+        </div>
+        <div class="card">
+          <h3>Wealth Jar · ₹2,740</h3>
+          <p class="muted">Grows from the 40% of change you keep for later.</p>
+          <div class="bars"><div style="height:18%"><span>Jul</span></div><div style="height:32%"><span>Aug</span></div><div style="height:47%"><span>Sep</span></div><div style="height:63%"><span>Oct</span></div><div style="height:80%"><span>Nov</span></div><div style="height:96%;background:var(--sun)"><span>Dec</span></div></div>
+        </div>
+        <div class="card">
+          <h3>Coming next</h3>
+          <p class="muted">Index funds for first-jobbers, and a first credit card matched to your saving record.</p>
+        </div>
+        <button class="btn ghost" data-go="0">Restart the tour</button>
+      </div>
+
+      <div class="tabs">
+        <button data-go="2" data-tab="2"><i>⌂</i>Home</button>
+        <button data-go="3" data-tab="3"><i>◎</i>Squads</button>
+        <button data-go="4" data-tab="4"><i>✈</i>Book</button>
+        <button data-go="5" data-tab="5"><i>◆</i>Wealth</button>
+      </div>
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+</div>
+<script>
+const steps=[
+ ['Welcome','Round-ups explained in one line, for 18 to 30 year olds.'],
+ ['Connect safely','Account Aggregator consent and UPI AutoPay, swept at ₹100.'],
+ ['Home and round-ups','Six everyday payments leave ₹50 of change.'],
+ ['Squad Jar','Four friends, one goal, each saving in their own name.'],
+ ['Book the goal','Partner discounts, or save-first credit at 70%.'],
+ ['Wealth Jar','Overnight fund for goals, gold ETF fund of funds for later.']];
+const ol=document.getElementById('steps');
+steps.forEach((s,i)=>{const li=document.createElement('li');li.innerHTML=`<button data-go="${i}"><span class="n">${i+1}</span><span><b>${s[0]}</b><span>${s[1]}</span></span></button>`;ol.appendChild(li)});
+const views=[...document.querySelectorAll('.view')];
+function go(i){views.forEach(v=>v.classList.toggle('on',+v.dataset.v===i));
+ document.querySelectorAll('#steps button').forEach(b=>b.setAttribute('aria-current',+b.dataset.go===i));
+ document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',+b.dataset.tab===i));
+ document.querySelector('.tabs').style.display=i<2?'none':'grid';
+ views[i].scrollTop=0}
+const toast=t=>{const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200)};
+let ok={aa:false,ap:false};
+document.addEventListener('click',e=>{
+ const g=e.target.closest('[data-go]');if(g){e.preventDefault();go(+g.dataset.go);return}
+ const a=e.target.closest('[data-act]');
+ if(a){e.preventDefault();const k=a.dataset.act;
+  if(k==='aa'||k==='ap'){ok[k]=true;document.getElementById(k).classList.add('done');
+   if(ok.aa&&ok.ap){const b=document.getElementById('toHome');b.style.opacity=1;b.style.pointerEvents='auto'}}
+  if(k==='nudge')toast('Nudge sent to Kabir: "Goa needs you. Resume saving?"');
+  if(k==='book'){const top=document.querySelector('.choice.sel').dataset.pick==='top';
+   toast(top?'Booked. ₹5,400 top-up repays from round-ups over 3 months.':'Plan saved. We will remind the squad on day 90.')}
+  return}
+ const c=e.target.closest('[data-pick]');
+ if(c){document.querySelectorAll('.choice').forEach(x=>x.classList.toggle('sel',x===c))}
+});
+go(0);
+</script>
+</body>
+</html>
